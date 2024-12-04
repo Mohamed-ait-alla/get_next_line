@@ -15,11 +15,9 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
-# define MAX_FD 256
+# define MAX_FD 1024
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h> // we don't neet this header in git 
-# include <fcntl.h> // we don't neet this header in git
 
 char	*get_next_line(int fd);
 char	*ft_strchr(const char *s, int c);
