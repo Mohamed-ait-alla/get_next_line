@@ -6,11 +6,11 @@
 /*   By: mait-all <mait-all@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 10:58:30 by mait-all          #+#    #+#             */
-/*   Updated: 2024/11/11 10:58:50 by mait-all         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:40:58 by mait-all         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "../bonus_includes/get_next_line_bonus.h"
 
 char	*ft_strchr(const char *s, int c)
 {

@@ -6,11 +6,11 @@
 /*   By: mait-all <mait-all@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:51:18 by mait-all          #+#    #+#             */
-/*   Updated: 2024/11/09 15:23:26 by mait-all         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:40:55 by mait-all         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 char	*ft_strchr(const char *s, int c)
 {

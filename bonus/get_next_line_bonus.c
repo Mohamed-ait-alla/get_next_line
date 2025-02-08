@@ -6,82 +6,81 @@
 /*   By: mait-all <mait-all@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 10:52:19 by mait-all          #+#    #+#             */
-/*   Updated: 2024/11/15 12:59:06 by mait-all         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:41:04 by mait-all         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "../bonus_includes/get_next_line_bonus.h"
 
-static char	*ft_fill_line_buffer(int fd, char *readed_lines, char *buffer)
+static char	*ft_error(char *buffer, char *readed_lines)
+{
+	free(buffer);
+	free(readed_lines);
+	return (NULL);
+}
+
+static char	*ft_fill_line_buffer(int fd, char *readed_lines)
 {
 	ssize_t		nbytes;
+	char		*buffer;
 	char		*tmp;
 
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (NULL);
 	nbytes = 1;
 	while (nbytes > 0)
 	{
 		nbytes = read(fd, buffer, BUFFER_SIZE);
 		if (nbytes == -1)
-		{
-			free(readed_lines);
-			return (NULL);
-		}
-		else if (nbytes == 0)
-			break ;
-		buffer[nbytes] = 0;
+			return (ft_error(buffer, readed_lines));
+		buffer[nbytes] = '\0';
 		if (!readed_lines)
 			readed_lines = ft_strdup("");
 		tmp = readed_lines;
 		readed_lines = ft_strjoin(tmp, buffer);
 		free(tmp);
-		tmp = NULL;
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
+	free(buffer);
 	return (readed_lines);
 }
 
-static char	*ft_separate_lines(char *line_buffer)
+static char	*ft_extract_line(char **readed_lines)
 {
-	char	*remain_lines;
+	char	*line;
+	char	*tmp;
 	ssize_t	i;
 
-	i = 0;
-	while (line_buffer[i] != '\n' && line_buffer[i] != '\0')
-		i++;
-	if (line_buffer[i] == 0 || line_buffer[i + 1] == 0)
+	if (!*readed_lines || **readed_lines == '\0')
 		return (NULL);
-	remain_lines = ft_substr(line_buffer, i + 1, ft_strlen(line_buffer) - i);
-	if (!remain_lines)
-	{
-		free(remain_lines);
-		remain_lines = NULL;
-	}
-	line_buffer[i + 1] = '\0';
-	return (remain_lines);
+	i = 0;
+	while ((*readed_lines)[i] != '\n' && (*readed_lines)[i] != '\0')
+		i++;
+	line = ft_substr(*readed_lines, 0, i + ((*readed_lines)[i] == '\n'));
+	tmp = ft_strdup(*readed_lines + i + ((*readed_lines)[i] == '\n'));
+	free(*readed_lines);
+	*readed_lines = NULL;
+	*readed_lines = tmp;
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*remains[MAX_FD];
-	char		*buffer;
+	static char	*readed_lines[MAX_FD];
 	char		*line;
 
-	buffer = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0 || fd > MAX_FD)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > MAX_FD)
+		return (NULL);
+	readed_lines[fd] = ft_fill_line_buffer(fd, readed_lines[fd]);
+	if (!readed_lines[fd])
+		return (NULL);
+	line = ft_extract_line(&readed_lines[fd]);
+	if (!line && readed_lines[fd])
 	{
-		free(remains[fd]);
-		remains[fd] = NULL;
-		return (NULL);
+		free(readed_lines[fd]);
+		readed_lines[fd] = NULL;
 	}
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-		return (NULL);
-	line = ft_fill_line_buffer(fd, remains[fd], buffer);
-	free(buffer);
-	buffer = NULL;
-	if (!line)
-		return (NULL);
-	remains[fd] = ft_separate_lines(line);
 	return (line);
 }

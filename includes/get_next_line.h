@@ -6,14 +6,14 @@
 /*   By: mait-all <mait-all@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:51:20 by mait-all          #+#    #+#             */
-/*   Updated: 2024/11/09 19:59:10 by mait-all         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:41:12 by mait-all         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024 
+#  define BUFFER_SIZE 1024
 # endif
 # include <unistd.h>
 # include <stdlib.h>
